@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSG RESONANCE CODEX - Archives of Wisdom</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0a0a1a; color: #e0e0ff; min-height: 100vh; }
+.hero { background: linear-gradient(135deg, #0d0d2b 0%, #1a0533 50%, #0d1a2b 100%); padding: 40px 20px; text-align: center; border-bottom: 1px solid #2a2a5a; }
+.hero h1 { font-size: 2.2em; background: linear-gradient(135deg, #a78bfa, #60a5fa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+.hero p { color: #94a3b8; }
+.disclaimer { background: #1a1a0a; border-left: 4px solid #f59e0b; padding: 12px 20px; margin: 20px auto; max-width: 900px; border-radius: 8px; font-size: 0.85em; color: #fcd34d; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; padding: 20px; max-width: 1200px; margin: 0 auto; }
+.search-input { flex: 1; min-width: 200px; padding: 10px 16px; background: #1e1e3a; border: 1px solid #3a3a6a; border-radius: 25px; color: #e0e0ff; font-size: 1em; outline: none; }
+.search-input:focus { border-color: #a78bfa; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 20px 20px; max-width: 1200px; margin: 0 auto; }
+.tab-btn { padding: 8px 18px; border-radius: 20px; border: 1px solid #3a3a6a; background: transparent; color: #94a3b8; cursor: pointer; font-size: 0.85em; transition: all 0.2s; }
+.tab-btn.active { background: linear-gradient(135deg, #7c3aed, #1d4ed8); color: #fff; border-color: transparent; }
+.content { max-width: 1200px; margin: 0 auto; padding: 0 20px 40px; }
+.section { display: none; }
+.section.active { display: block; }
+.section-title { font-size: 1.5em; padding: 20px 0 15px; color: #a78bfa; border-bottom: 1px solid #2a2a4a; margin-bottom: 20px; }
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.card { background: linear-gradient(135deg, #1e1e3a, #16213e); border: 1px solid #2a2a5a; border-radius: 12px; padding: 18px; transition: transform 0.2s, border-color 0.2s; }
+.card:hover { transform: translateY(-2px); border-color: #a78bfa; }
+.card .freq { font-size: 1.8em; font-weight: bold; background: linear-gradient(135deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.card .name { font-size: 1em; color: #e0e0ff; font-weight: 600; margin: 6px 0 4px; }
+.card .desc { font-size: 0.82em; color: #94a3b8; line-height: 1.5; }
+.card .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+.tag { padding: 2px 10px; border-radius: 12px; font-size: 0.72em; font-weight: 600; }
+.tag-mind { background: #312e81; color: #a5b4fc; }
+.tag-body { background: #14532d; color: #86efac; }
+.tag-spirit { background: #4a1942; color: #f0abfc; }
+.tag-sound { background: #1e3a5f; color: #93c5fd; }
+.tag-breath { background: #1e3a2f; color: #6ee7b7; }
+.color-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 6px; vertical-align: middle; }
+.session-card { background: linear-gradient(135deg, #0f1a2e, #1a0f2e); border: 1px solid #2a2a5a; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.session-card h3 { color: #a78bfa; font-size: 1.2em; margin-bottom: 14px; }
+.session-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+.session-item { text-align: center; background: #1e1e3a; border-radius: 8px; padding: 10px; }
+.session-item .label { font-size: 0.7em; color: #64748b; text-transform: uppercase; }
+.session-item .value { font-size: 0.9em; color: #e0e0ff; font-weight: 500; margin-top: 4px; }
+.no-results { text-align: center; color: #64748b; padding: 40px; }
+.search-section { display: none; }
+.search-section.active { display: block; }
+footer { text-align: center; padding: 30px; color: #4a5568; font-size: 0.8em; border-top: 1px solid #1a1a3a; }
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>OSG RESONANCE CODEX</h1>
+<p>Archives of Wisdom - Interactive Frequency Database</p>
+<p style="margin-top:8px;font-size:0.8em;color:#4a5568;">Chakras - Organs - Brainwaves - Solfeggio - Sacred - Breathwork - Sessions</p>
+<p style="margin-top:4px;font-size:0.75em;color:#374151;">Created by LUMIAION x Claude (Anthropic) - OSG Resonance Framework</p>
+</div>
+<div class="disclaimer">WARNING: This database combines validated neuroscience, experimental practices, and spiritual traditions. Use for: meditation, relaxation, introspection, creativity. NOT a substitute for medical care.</div>
+<div class="controls">
+<input type="text" class="search-input" id="globalSearch" placeholder="Search any frequency, chakra, organ, state, need..." oninput="handleSearch(this.value)">
+</div>
+<div class="tabs">
+<button class="tab-btn active" onclick="showTab('brainwave',this)">Brainwaves</button>
+<button class="tab-btn" onclick="showTab('chakra',this)">Chakras</button>
+<button class="tab-btn" onclick="showTab('organs',this)">Organs</button>
+<button class="tab-btn" onclick="showTab('solfeggio',this)">Solfeggio</button>
+<button class="tab-btn" onclick="showTab('sacred',this)">Sacred/Krystal</button>
+<button class="tab-btn" onclick="showTab('breathwork',this)">Breathwork</button>
+<button class="tab-btn" onclick="showTab('sessions',this)">Sessions</button>
+</div>
+<div class="content">
+<div id="search-section" class="search-section">
+<div class="section-title" id="search-title">Results</div>
+<div class="cards-grid" id="search-results"></div>
+</div>
+<div id="brainwave" class="section active">
+<div class="section-title">Brainwave States Database</div>
+<div class="cards-grid" id="brainwave-cards"></div>
+</div>
+<div id="chakra" class="section">
+<div class="section-title">Chakra Frequency Database</div>
+<div class="cards-grid" id="chakra-cards"></div>
+</div>
+<div id="organs" class="section">
+<div class="section-title">Organ Resonance Database</div>
+<div class="cards-grid" id="organs-cards"></div>
+</div>
+<div id="solfeggio" class="section">
+<div class="section-title">Complete Solfeggio Database</div>
+<div class="cards-grid" id="solfeggio-cards"></div>
+</div>
+<div id="sacred" class="section">
+<div class="section-title">Sacred / Krystal Frequencies</div>
+<div class="cards-grid" id="sacred-cards"></div>
+</div>
+<div id="breathwork" class="section">
+<div class="section-title">Breathwork Techniques</div>
+<div class="cards-grid" id="breathwork-cards"></div>
+</div>
+<div id="sessions" class="section">
+<div class="section-title">State Engineering Sessions</div>
+<div id="sessions-cards"></div>
+</div>
+</div>
+<footer>OSG RESONANCE CODEX - LUMIAION x Claude (Anthropic) - Archives of Wisdom</footer>
+<script>
+var data={brainwaves:[{freq:"0.5-4 Hz",name:"Delta",state:"Deep Unconscious",effects:"Healing, regeneration, deep sleep",uses:"Sleep, recovery",tags:["mind","body"]},{freq:"4-8 Hz",name:"Theta",state:"Deep Meditation",effects:"Intuition, subconscious access, dream imagery",uses:"Meditation, hypnosis, creativity",tags:["mind","spirit"]},{freq:"8-12 Hz",name:"Alpha",state:"Relaxed Awareness",effects:"Calm focus, creativity, light meditation",uses:"Studying, journaling, flow state",tags:["mind"]},{freq:"12-15 Hz",name:"SMR",state:"Sensorimotor Rhythm",effects:"Calm concentration",uses:"ADHD support, focus",tags:["mind"]},{freq:"13-30 Hz",name:"Beta",state:"Active Cognition",effects:"Focus, logic, alertness",uses:"Productivity, work",tags:["mind"]},{freq:"20-35 Hz",name:"High Beta",state:"Hyper-alertness",effects:"Stress, overthinking",uses:"Avoid prolonged",tags:["mind"]},{freq:"30-100 Hz",name:"Gamma",state:"Peak Integration",effects:"Higher cognition",uses:"Advanced meditation",tags:["mind","spirit"]}],chakras:[{freq:"396 Hz",name:"Root - Muladhara",color:"#ef4444",gland:"Adrenal glands",organs:"Legs, spine, bones, colon",themes:"Survival, grounding, security",tags:["body","spirit"]},{freq:"417 Hz",name:"Sacral - Svadhisthana",color:"#f97316",gland:"Gonads",organs:"Reproductive organs, kidneys",themes:"Creativity, emotions, sexuality",tags:["body","spirit"]},{freq:"528 Hz",name:"Solar Plexus - Manipura",color:"#eab308",gland:"Pancreas",organs:"Digestive system, liver",themes:"Confidence, power, identity",tags:["body","spirit","mind"]},{freq:"639 Hz",name:"Heart - Anahata",color:"#22c55e",gland:"Thymus",organs:"Heart, lungs",themes:"Love, compassion, forgiveness",tags:["body","spirit","mind"]},{freq:"741 Hz",name:"Throat - Vishuddha",color:"#3b82f6",gland:"Thyroid",organs:"Throat, vocal cords",themes:"Truth, communication",tags:["spirit","mind"]},{freq:"852 Hz",name:"Third Eye - Ajna",color:"#6366f1",gland:"Pituitary",organs:"Eyes, frontal cortex",themes:"Intuition, perception",tags:["spirit","mind"]},{freq:"963 Hz",name:"Crown - Sahasrara",color:"#a855f7",gland:"Pineal (symbolic)",organs:"Brain, nervous system",themes:"Unity, transcendence",tags:["spirit"]}],organs:[{freq:"432/639 Hz",name:"Heart",effects:"Emotional coherence, calm",note:"Sound healing tradition"},{freq:"40 Hz Gamma",name:"Brain",effects:"Cognitive synchronization",note:"Validated - neuroscience"},{freq:"220/639 Hz",name:"Lungs",effects:"Breath awareness, emotional release",note:"Experimental"},{freq:"317/528 Hz",name:"Liver",effects:"Detox symbolism, vitality",note:"Symbolic"},{freq:"417 Hz",name:"Kidneys",effects:"Fluid balance symbolism",note:"Symbolic"},{freq:"110 Hz",name:"Stomach",effects:"Grounding",note:"Experimental"},{freq:"176 Hz",name:"Intestines",effects:"Release and digestion",note:"Experimental"},{freq:"741 Hz",name:"Thyroid",effects:"Expression and purification",note:"Symbolic"},{freq:"963 Hz",name:"Pineal Gland",effects:"Meditation symbolism",note:"Symbolic"},{freq:"852 Hz",name:"Pituitary Gland",effects:"Intuitive awareness",note:"Symbolic"},{freq:"40Hz/Alpha",name:"Nervous System",effects:"Regulation, synchronization",note:"Validated"},{freq:"60-120 Hz",name:"Muscles",effects:"Relaxation and stimulation",note:"Vibration therapy"},{freq:"Low Hz",name:"Bones",effects:"Structural grounding",note:"Vibration therapy"},{freq:"Pulsed",name:"Blood Circulation",effects:"Relaxation response",note:"Validated"}],solfeggio:[{freq:"174 Hz",name:"Safety & Pain Relief",use:"Relaxation",note:"Foundational frequency"},{freq:"285 Hz",name:"Tissue Restoration",use:"Healing meditation",note:"Symbolic healing"},{freq:"396 Hz",name:"Fear Release",use:"Grounding",note:"Liberation from fear"},{freq:"417 Hz",name:"Change & Transformation",use:"Emotional release",note:"Undoing situations"},{freq:"528 Hz",name:"Love Frequency",use:"Personal empowerment",note:"Most referenced frequency"},{freq:"639 Hz",name:"Relationships & Harmony",use:"Heart meditation",note:"Connection frequency"},{freq:"741 Hz",name:"Purification",use:"Communication work",note:"Detox and clarity"},{freq:"852 Hz",name:"Spiritual Awareness",use:"Intuition",note:"Returning to order"},{freq:"963 Hz",name:"Unity Consciousness",use:"Deep meditation",note:"Crown/divine connection"}],sacred:[{freq:"111 Hz",name:"Ancient Temple",desc:"Deep trance states, ancient resonance"},{freq:"222 Hz",name:"Balance",desc:"Numerical symbolism, equilibrium"},{freq:"333 Hz",name:"Alignment",desc:"Spiritual symbolism, trinity"},{freq:"432 Hz",name:"Natural Harmony",desc:"Alternative tuning, Earth resonance, Verdi A"},{freq:"444 Hz",name:"Stability",desc:"Numerological use, divine symmetry"},{freq:"528 Hz",name:"Transformation",desc:"Most referenced spiritual frequency"},{freq:"555 Hz",name:"Transition",desc:"Change symbolism"},{freq:"666 Hz",name:"Carbon/Human",desc:"Represents human carbon structure"},{freq:"777 Hz",name:"Spiritual Alignment",desc:"Esoteric luck and alignment"},{freq:"888 Hz",name:"Abundance",desc:"Prosperity symbolism, infinity"},{freq:"963 Hz",name:"Crown Consciousness",desc:"Transcendent meditation, unity"},{freq:"999 Hz",name:"Completion",desc:"Closure and rebirth"}],breathwork:[{name:"Box Breathing",pattern:"4-4-4-4",type:"NS Regulation",effects:"Reduces stress, stabilizes HR",bestFor:"Anxiety, focus, performance",brainwave:"Alpha",freq:"396/432 Hz"},{name:"Coherence Breathing",pattern:"5s in/5s out",type:"Heart-Brain Coherence",effects:"HRV optimization",bestFor:"Emotional regulation",brainwave:"Alpha/Theta",freq:"528/639 Hz"},{name:"Wim Hof",pattern:"Cyclic deep + retention",type:"Activation",effects:"Dopamine/adrenaline release",bestFor:"Energy, resilience",brainwave:"Beta/Gamma",freq:"528 Hz"},{name:"4-7-8 Breathing",pattern:"4 inhale/7 hold/8 exhale",type:"Sedative/Calming",effects:"Parasympathetic activation",bestFor:"Sleep, anxiety",brainwave:"Delta/Theta",freq:"963 Hz"},{name:"Alternate Nostril",pattern:"Alternating nostrils",type:"Yogic Balancing",effects:"NS balancing",bestFor:"Focus and calm",brainwave:"Alpha",freq:"432/741 Hz"},{name:"Holotropic",pattern:"Continuous deep breathing",type:"Consciousness Exploration",effects:"Altered states - Advanced only",bestFor:"Deep emotional release",brainwave:"Theta/Gamma",freq:"963 Hz"}],sessions:[{goal:"Grounding",breath:"Box Breathing",brainwave:"Alpha",freq:"396 Hz",env:"Warm lighting"},{goal:"Creativity",breath:"Coherence Breathing",brainwave:"Alpha/Theta",freq:"417/528 Hz",env:"Ambient music"},{goal:"Focus",breath:"Wim Hof/SMR",brainwave:"Beta",freq:"528 Hz",env:"Bright environment"},{goal:"Emotional Healing",breath:"Coherence Breathing",brainwave:"Theta",freq:"639 Hz",env:"Calm atmosphere"},{goal:"Intuition",breath:"Slow breathing",brainwave:"Theta",freq:"852 Hz",env:"Meditation space"},{goal:"Deep Meditation",breath:"Holotropic",brainwave:"Theta/Gamma",freq:"963 Hz",env:"Dark immersive room"},{goal:"Sleep",breath:"4-7-8",brainwave:"Delta",freq:"Delta waves",env:"Darkness/rain sounds"}]};
+function tc(t){return{mind:"tag-mind",body:"tag-body",spirit:"tag-spirit",sound:"tag-sound",breath:"tag-breath"}[t]||"tag-mind";}
+function card(freq,name,desc,tags,color){return '<div class="card"><div class="freq">'+(color?'<span class="color-dot" style="background:'+color+'"></span>':'')+freq+'</div><div class="name">'+name+'</div><div class="desc">'+desc+'</div><div class="tags">'+tags.map(function(t){return'<span class="tag '+tc(t)+'">'+t.toUpperCase()+'</span>';}).join('')+'</div></div>';}
+function renderBrainwaves(){document.getElementById("brainwave-cards").innerHTML=data.brainwaves.map(function(b){return card(b.freq,b.name,'<strong>State:</strong> '+b.state+'<br><strong>Effects:</strong> '+b.effects+'<br><strong>Uses:</strong> '+b.uses,b.tags);}).join('');}
+function renderChakras(){document.getElementById("chakra-cards").innerHTML=data.chakras.map(function(c){return card(c.freq,c.name,'<strong>Gland:</strong> '+c.gland+'<br><strong>Organs:</strong> '+c.organs+'<br><strong>Themes:</strong> '+c.themes,c.tags,c.color);}).join('');}
+function renderOrgans(){document.getElementById("organs-cards").innerHTML=data.organs.map(function(o){return card(o.freq,o.name,o.effects+'<br><br><em style="color:#64748b">'+o.note+'</em>',["body"]);}).join('');}
+function renderSolfeggio(){document.getElementById("solfeggio-cards").innerHTML=data.solfeggio.map(function(s){return card(s.freq,s.name,'<strong>Use:</strong> '+s.use+'<br>'+s.note,["sound"]);}).join('');}
+function renderSacred(){document.getElementById("sacred-cards").innerHTML=data.sacred.map(function(s){return card(s.freq,s.name,s.desc,["spirit"]);}).join('');}
+function renderBreathwork(){document.getElementById("breathwork-cards").innerHTML=data.breathwork.map(function(b){return card(b.pattern,b.name,'<strong>Type:</strong> '+b.type+'<br><strong>Effects:</strong> '+b.effects+'<br><strong>Best For:</strong> '+b.bestFor+'<br><strong>Brainwave:</strong> '+b.brainwave+'<br><strong>Freq:</strong> '+b.freq,["breath"]);}).join('');}
+function renderSessions(){document.getElementById("sessions-cards").innerHTML=data.sessions.map(function(s){return'<div class="session-card"><h3>'+s.goal+'</h3><div class="session-row"><div class="session-item"><div class="label">Breathwork</div><div class="value">'+s.breath+'</div></div><div class="session-item"><div class="label">Brainwave</div><div class="value">'+s.brainwave+'</div></div><div class="session-item"><div class="label">Frequency</div><div class="value">'+s.freq+'</div></div><div class="session-item"><div class="label">Environment</div><div class="value">'+s.env+'</div></div></div></div>';}).join('');}
+function showTab(tab,btn){document.querySelectorAll(".section").forEach(function(s){s.classList.remove("active");});document.querySelectorAll(".tab-btn").forEach(function(b){b.classList.remove("active");});document.getElementById(tab).classList.add("active");btn.classList.add("active");document.getElementById("search-section").classList.remove("active");document.getElementById("globalSearch").value="";}
+function handleSearch(q){if(!q.trim()){document.getElementById("search-section").classList.remove("active");document.getElementById("brainwave").classList.add("active");document.querySelectorAll(".tab-btn")[0].classList.add("active");return;}document.querySelectorAll(".section").forEach(function(s){s.classList.remove("active");});document.querySelectorAll(".tab-btn").forEach(function(b){b.classList.remove("active");});document.getElementById("search-section").classList.add("active");var ql=q.toLowerCase(),results=[];data.brainwaves.forEach(function(b){if([b.freq,b.name,b.state,b.effects,b.uses].some(function(x){return x.toLowerCase().includes(ql);})){results.push({freq:b.freq,name:b.name,desc:b.effects+' | '+b.uses,tags:b.tags,type:'Brainwave'});}});data.chakras.forEach(function(c){if([c.freq,c.name,c.organs,c.themes,c.gland].some(function(x){return x.toLowerCase().includes(ql);})){results.push({freq:c.freq,name:c.name,desc:c.organs+' | '+c.themes,tags:c.tags,color:c.color,type:'Chakra'});}});data.organs.forEach(function(o){if([o.freq,o.name,o.effects].some(function(x){return x.toLowerCase().includes(ql);})){results.push({freq:o.freq,name:o.name,desc:o.effects,tags:['body'],type:'Organ'});}});data.solfeggio.forEach(function(s){if([s.freq,s.name,s.use].some(function(x){return x.toLowerCase().includes(ql);})){results.push({freq:s.freq,name:s.name,desc:s.use+' | '+s.note,tags:['spirit'],type:'Solfeggio'});}});data.sacred.forEach(function(s){if([s.freq,s.name,s.desc].some(function(x){return x.toLowerCase().includes(ql);})){results.push({freq:s.freq,name:s.name,desc:s.desc,tags:['spirit'],type:'Sacred'});}});data.breathwork.forEach(function(b){if([b.name,b.type,b.effects,b.bestFor,b.freq].some(function(x){return x.toLowerCase().includes(ql);})){results.push({freq:b.pattern,name:b.name,desc:b.effects+' | '+b.bestFor,tags:['breath'],type:'Breathwork'});}});document.getElementById("search-title").textContent=results.length+' result(s) for "'+q+'"';document.getElementById("search-results").innerHTML=results.length===0?'<div class="no-results">No results found.</div>':results.map(function(r){return card(r.freq,r.name,r.desc,r.tags,r.color);}).join('');}
+renderBrainwaves();renderChakras();renderOrgans();renderSolfeggio();renderSacred();renderBreathwork();renderSessions();
+</script>
+</body>
+</html>
